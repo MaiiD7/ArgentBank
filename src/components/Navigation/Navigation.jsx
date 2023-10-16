@@ -4,7 +4,6 @@ import { Link, useLocation } from "react-router-dom"
 
 const Navigation = () => {
   const location = useLocation().pathname;
-  console.log(location);
 
   return (
     <nav className="main-nav">
@@ -18,7 +17,7 @@ const Navigation = () => {
       </Link>
       <div>
         {location.includes('user') ? (
-          <>
+          <div style={{display: 'flex', gap: '20px'}}>
             <Link className="main-nav-item" to="/user">
               <FontAwesomeIcon icon={faCircleUser} />
               Tony
@@ -27,7 +26,7 @@ const Navigation = () => {
               <FontAwesomeIcon icon={faRightFromBracket} />
               Sign Out
             </Link>
-          </> 
+          </div> 
         ) : (
           <Link className="main-nav-item" to="/sign-in">
             <FontAwesomeIcon icon={faCircleUser} />

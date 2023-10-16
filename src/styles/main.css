@@ -52,8 +52,12 @@ body {
 }
 
 .main-nav-item {
+  display: flex;
+  gap: 5px;
+  align-items: center;
   text-decoration: none;
   margin-right: 0.5rem;
+  width:fit-content;
 }
 
 .main-nav-item:hover {
@@ -93,11 +97,14 @@ body {
   font-weight: bold;
   font-size: 1rem;
   margin: 0;
+  line-height: 1.1;
 }
 
 .hero-content .text {
   margin-bottom: 0;
   font-size: 0.9rem;
+  margin-top: 20px;
+  line-height: 1.1;
 }
 
 @media (min-width: 920px) {
@@ -109,7 +116,7 @@ body {
   .hero-content {
     position: absolute;
     top: 50px;
-    right: 50px;
+    right: 15px;
     width: 350px;
     margin: 2rem;
   }
@@ -288,5 +295,11 @@ body {
 
   .transaction-button {
     width: 200px;
+  }
+
+  .hero-content {
+    position: absolute;
+    top: 50px;
+    right: 25px;
   }
 }
