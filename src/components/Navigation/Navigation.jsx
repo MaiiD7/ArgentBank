@@ -1,9 +1,29 @@
 import { faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Link, useLocation } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { setUserToken } from "../../redux/token";
+import { setUser } from "../../redux/user";
 
 const Navigation = () => {
   const location = useLocation().pathname;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { remember } = useSelector((state) => state.remember);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    dispatch(setUser(null))
+    dispatch(setUserToken(null))
+
+    if (!remember) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    }
+    
+    navigate('/sign-in')
+  }
 
   return (
     <nav className="main-nav">
@@ -17,12 +37,12 @@ const Navigation = () => {
       </Link>
       <div>
         {location.includes('user') ? (
-          <div style={{display: 'flex', gap: '20px'}}>
+          <div style={{display: 'flex', gap: '10px'}}>
             <Link className="main-nav-item" to="/user">
               <FontAwesomeIcon icon={faCircleUser} />
               Tony
             </Link>
-            <Link className="main-nav-item" to="/">
+            <Link className="main-nav-item" onClick={handleLogout}>
               <FontAwesomeIcon icon={faRightFromBracket} />
               Sign Out
             </Link>

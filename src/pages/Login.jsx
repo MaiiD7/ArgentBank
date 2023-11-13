@@ -1,22 +1,111 @@
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useEffect, useState } from "react";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../styles/main.css";
 import Navigation from "../components/Navigation/Navigation";
 import Footer from "../components/Footer/Footer";
-import Form from "../components/Form/Form";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserToken } from "../redux/token";
+import { setUser } from "../redux/user";
+import { setRemember } from "../redux/remember";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => (
-  <>
-    <Navigation/>
-    <main className="main bg-dark">
-      <section className="sign-in-content">
-        <FontAwesomeIcon className="sign-in-icon" icon={faCircleUser} />
-        <h1>Sign In</h1>
-        <Form/>
-      </section>
-    </main>
-    <Footer/>
-  </>
-)
+const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.token);
+  const { user } = useSelector((state) => state.user);
+  const { remember } = useSelector((state) => state.remember);
 
-export default Login
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (localStorage.getItem('token') !== null && (user !== null && token !== null)) {
+      navigate('/user')
+    }
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .post("http://localhost:3001/api/v1/user/login",{
+        email: username,
+        password: password,
+      })
+      .then((response) => {
+        const message = document.getElementById("error-message")
+        if (response.status === 200) {
+          dispatch(setUser({
+            email: username,
+            password: password,
+          }))
+          dispatch(setUserToken(response.data.body.token))
+          message.classList.add("hidden")
+        }
+      }).then(() => {
+        if (remember) {
+          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('token', token);
+        } else {
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+        }
+        navigate("/user")
+      })
+      .catch(() => {
+        const message = document.getElementById("error-message")
+        message.classList.remove("hidden")
+        dispatch(setUser(null))
+        dispatch(setUserToken(null))
+      });
+  }
+
+  return (
+    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+      <Navigation />
+      <main className="main">
+        <section className="sign-in-content">
+          <FontAwesomeIcon className="sign-in-icon" icon={faCircleUser} />
+          <h1 style={{ fontSize: "25px" }}>Sign In</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="input-wrapper">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div className="input-wrapper">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div id="error-message" className="hidden">
+              <p className="form-message" >Wrong username or password!</p>
+            </div>
+            <div className="input-remember">
+              <input type="checkbox" id="remember-me" checked={remember} onChange={() => {
+                dispatch(setRemember(!remember))
+                }}/>
+              <label htmlFor="remember-me">Remember me</label>
+            </div>
+            <button type="submit" className="sign-in-button">
+              Sign In
+            </button>
+          </form>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default Login;
