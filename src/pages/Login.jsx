@@ -22,7 +22,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if (localStorage.getItem('token') !== null && (user !== null && token !== null)) {
+    // If user connected, navigate to his dashboard
+    if (localStorage.getItem('token') !== null || (user !== null && token !== null)) {
       navigate('/user')
     }
   }, []);
@@ -30,6 +31,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Fetch user infos
     axios
       .post("http://localhost:3001/api/v1/user/login",{
         email: username,
@@ -37,6 +39,7 @@ const Login = () => {
       })
       .then((response) => {
         const message = document.getElementById("error-message")
+        // If success : set user and token in redux
         if (response.status === 200) {
           dispatch(setUser({
             email: username,
@@ -44,16 +47,8 @@ const Login = () => {
           }))
           dispatch(setUserToken(response.data.body.token))
           message.classList.add("hidden")
+          navigate("/user")
         }
-      }).then(() => {
-        if (remember) {
-          localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('token', token);
-        } else {
-          localStorage.removeItem('user');
-          localStorage.removeItem('token');
-        }
-        navigate("/user")
       })
       .catch(() => {
         const message = document.getElementById("error-message")

@@ -11,6 +11,7 @@ const Home = () => {
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
+    // If user connected, navigate to his dashboard
     if (localStorage.getItem('user') !== null || (user !== null && token !== null)) {
       navigate('/user')
     }

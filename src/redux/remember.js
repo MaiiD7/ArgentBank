@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const localRemember = localStorage.getItem('remember')
+
 export const rememberSlice = createSlice({
   name: 'user',
   initialState: {
-    remember: false,
+    remember: localRemember === "true" ? true : false,
   },
   reducers: {
     setRemember: (state, action) => {

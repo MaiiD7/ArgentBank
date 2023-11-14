@@ -9,25 +9,22 @@ const Navigation = () => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { remember } = useSelector((state) => state.remember);
 
   const handleLogout = (e) => {
     e.preventDefault();
 
     dispatch(setUser(null))
     dispatch(setUserToken(null))
-
-    if (!remember) {
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-    }
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('remember');
     
     navigate('/sign-in')
   }
 
   return (
     <nav className="main-nav">
-      <Link className="main-nav-logo" to="/">
+      <Link className="main-nav-logo" to={location.includes('user') ? "/user" : "/"}>
         <img
           className="main-nav-logo-image"
           src="src\assets\argentBankLogo.png"
