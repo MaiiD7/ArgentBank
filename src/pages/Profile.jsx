@@ -13,21 +13,27 @@ const Profile = () => {
   const { remember } = useSelector((state) => state.remember);
 
   useEffect(() => {
+    console.log((sessionStorage.getItem('token') === null));
     // Store infos in localStorage if "Remember me" checked
+    sessionStorage.setItem('test', 'test')
     if (remember) {
-      localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
       localStorage.setItem('remember', remember);
     } else {
-      localStorage.removeItem('user');
+      if (token !== null) {
+        sessionStorage.setItem('token', token)
+      }
       localStorage.removeItem('token');
+      localStorage.removeItem('remember');
     }
 
     // If no user connected, navigate to the sign in page
-    if (localStorage.getItem('token') === null && (user === null && token === null)) {
+    if (localStorage.getItem('token') === null && (sessionStorage.getItem('token') === null )) {
       navigate('/sign-in')
     }
   }, []);
+
+
 
   return (
     <div style={{height: '100%', display: 'flex', flexDirection: 'column', lineHeight: 1.1}}>

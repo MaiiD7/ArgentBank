@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const localToken = localStorage.getItem('token')
-
+const localToken = localStorage.getItem('token') !== null ?
+ localStorage.getItem('token') : (
+  sessionStorage.getItem('token') !== null ? sessionStorage.getItem('token') :
+  null
+ )
 
 export const tokenSlice = createSlice({
   name: 'token',

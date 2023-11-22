@@ -15,8 +15,8 @@ const Navigation = () => {
 
     dispatch(setUser(null))
     dispatch(setUserToken(null))
-    localStorage.removeItem('user');
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     localStorage.removeItem('remember');
     
     navigate('/sign-in')

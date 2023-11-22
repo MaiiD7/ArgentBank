@@ -23,7 +23,7 @@ const Login = () => {
 
   useEffect(() => {
     // If user connected, navigate to his dashboard
-    if (localStorage.getItem('token') !== null || (user !== null && token !== null)) {
+    if (localStorage.getItem('token') !== null || sessionStorage.getItem('token') !== null) {
       navigate('/user')
     }
   }, []);
