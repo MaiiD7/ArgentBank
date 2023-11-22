@@ -12,7 +12,6 @@ const Profile = () => {
   const { remember } = useSelector((state) => state.remember);
 
   useEffect(() => {
-    console.log((sessionStorage.getItem('token') === null));
     // Store infos in localStorage if "Remember me" checked
     sessionStorage.setItem('test', 'test')
     if (remember) {
