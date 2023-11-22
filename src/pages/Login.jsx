@@ -6,7 +6,6 @@ import Navigation from "../components/Navigation/Navigation";
 import Footer from "../components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserToken } from "../redux/token";
-import { setUser } from "../redux/user";
 import { setRemember } from "../redux/remember";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,8 +13,6 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.token);
-  const { user } = useSelector((state) => state.user);
   const { remember } = useSelector((state) => state.remember);
 
   const [username, setUsername] = useState('');
@@ -41,10 +38,6 @@ const Login = () => {
         const message = document.getElementById("error-message")
         // If success : set user and token in redux
         if (response.status === 200) {
-          dispatch(setUser({
-            email: username,
-            password: password,
-          }))
           dispatch(setUserToken(response.data.body.token))
           message.classList.add("hidden")
           navigate("/user")
@@ -53,7 +46,6 @@ const Login = () => {
       .catch(() => {
         const message = document.getElementById("error-message")
         message.classList.remove("hidden")
-        dispatch(setUser(null))
         dispatch(setUserToken(null))
       });
   }

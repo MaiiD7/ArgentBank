@@ -9,7 +9,6 @@ import { useSelector } from "react-redux"
 const Profile = () => {
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.token);
-  const { user } = useSelector((state) => state.user);
   const { remember } = useSelector((state) => state.remember);
 
   useEffect(() => {

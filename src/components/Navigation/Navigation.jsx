@@ -1,9 +1,8 @@
 import { faCircleUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { setUserToken } from "../../redux/token";
-import { setUser } from "../../redux/user";
 
 const Navigation = () => {
   const location = useLocation().pathname;
@@ -13,7 +12,6 @@ const Navigation = () => {
   const handleLogout = (e) => {
     e.preventDefault();
 
-    dispatch(setUser(null))
     dispatch(setUserToken(null))
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
