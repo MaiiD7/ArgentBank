@@ -13,7 +13,6 @@ const Profile = () => {
 
   useEffect(() => {
     // Store infos in localStorage if "Remember me" checked
-    sessionStorage.setItem('test', 'test')
     if (remember) {
       localStorage.setItem('token', token);
       localStorage.setItem('remember', remember);
