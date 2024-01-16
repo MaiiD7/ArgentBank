@@ -21,7 +21,7 @@ const Login = () => {
   useEffect(() => {
     // If user connected, navigate to his dashboard
     if (localStorage.getItem('token') !== null || sessionStorage.getItem('token') !== null) {
-      navigate('/user')
+      navigate('/profile')
     }
   }, []);
 
@@ -40,7 +40,7 @@ const Login = () => {
         if (response.status === 200) {
           dispatch(setUserToken(response.data.body.token))
           message.classList.add("hidden")
-          navigate("/user")
+          navigate("/profile")
         }
       })
       .catch(() => {

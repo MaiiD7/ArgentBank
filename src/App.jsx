@@ -20,8 +20,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path='/' element={<Home />} />
           {/* Login Page Route */}
           <Route path='/sign-in' element={<Login />} />
-          {/* Dashborad route with a parameter corresponding to the curretn user id */}
-          <Route path='/user' element={<Profile />} />
+          {/* Dashborad route with a parameter corresponding to the current profile id */}
+          <Route path='/profile' element={<Profile />} />
         </Routes>
       </Router>
     </React.StrictMode>

@@ -1,13 +1,15 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import AccountContainer from "../components/AccountContainer/AccountContainer"
 import Footer from "../components/Footer/Footer"
 import Navigation from "../components/Navigation/Navigation"
 import ProfileHeader from "../components/ProfileHeader/ProfileHeader"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
+import axios from "axios"
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [userProfile, setUserProfile] = useState({});
   const { token } = useSelector((state) => state.token);
   const { remember } = useSelector((state) => state.remember);
 
@@ -28,15 +30,24 @@ const Profile = () => {
     if (localStorage.getItem('token') === null && (sessionStorage.getItem('token') === null )) {
       navigate('/sign-in')
     }
+
+    // If user connected, load user informaions
+    axios
+    .post("http://localhost:3001/api/v1/user/profile",{}, {
+        headers: {
+        Authorization: 'Bearer' + token
+      }
+    }).then((response) => {
+      setUserProfile(response.data.body)
+    })
+
   }, []);
-
-
 
   return (
     <div style={{height: '100%', display: 'flex', flexDirection: 'column', lineHeight: 1.1}}>
-    <Navigation/>
+    <Navigation firstName={userProfile.firstName} />
     <main className="main">
-      <ProfileHeader/>
+      <ProfileHeader firstName={userProfile.firstName} lastName={userProfile.lastName}/>
       <AccountContainer/>
     </main>
     <Footer/>

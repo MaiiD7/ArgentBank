@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     // If user connected, navigate to his dashboard
     if (localStorage.getItem('token') !== null || sessionStorage.getItem('token') !== null) {
-      navigate('/user')
+      navigate('/profile')
     }
   }, []);
 

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { setUserToken } from "../../redux/token";
 
-const Navigation = () => {
+const Navigation = (props) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const Navigation = () => {
 
   return (
     <nav className="main-nav">
-      <Link className="main-nav-logo" to={location.includes('user') ? "/user" : "/"}>
+      <Link className="main-nav-logo" to={location.includes('profile') ? "/profile" : "/"}>
         <img
           className="main-nav-logo-image"
           src="src\assets\argentBankLogo.png"
@@ -31,11 +31,11 @@ const Navigation = () => {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>
-        {location.includes('user') ? (
+        {location.includes('profile') ? (
           <div style={{display: 'flex', gap: '10px'}}>
-            <Link className="main-nav-item" to="/user">
+            <Link className="main-nav-item" to="/profile">
               <FontAwesomeIcon icon={faCircleUser} />
-              Tony
+              {props.firstName}
             </Link>
             <Link className="main-nav-item" onClick={handleLogout}>
               <FontAwesomeIcon icon={faRightFromBracket} />
