@@ -10,9 +10,12 @@ import axios from "axios"
 const Profile = () => {
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState({});
+  const [newUserName, setNewUserName] = useState({});
   const { token } = useSelector((state) => state.token);
   const { remember } = useSelector((state) => state.remember);
 
+  // First Effect to redirect disconnected user
+  // Or to load connected user infos
   useEffect(() => {
     // Store infos in localStorage if "Remember me" checked
     if (remember) {
@@ -43,11 +46,37 @@ const Profile = () => {
 
   }, []);
 
+  // Second Effect triggered when user names are modified
+  useEffect(() => {
+    if (newUserName.firstName && newUserName.lastName){
+      axios
+        .put("http://localhost:3001/api/v1/user/profile",
+        {
+          firstName: newUserName.firstName,
+          lastName: newUserName.lastName,
+        },
+        {
+            headers: {
+            Authorization: 'Bearer' + token
+          }
+        }).then(
+            axios
+            .post("http://localhost:3001/api/v1/user/profile",{}, {
+                headers: {
+                Authorization: 'Bearer' + token
+              }
+            }).then((response) => {
+              setUserProfile(response.data.body)
+            })
+          )
+    }
+  }, [newUserName]);
+
   return (
     <div style={{height: '100%', display: 'flex', flexDirection: 'column', lineHeight: 1.1}}>
     <Navigation firstName={userProfile.firstName} />
     <main className="main">
-      <ProfileHeader firstName={userProfile.firstName} lastName={userProfile.lastName}/>
+      <ProfileHeader firstName={userProfile.firstName} lastName={userProfile.lastName} setNewUserName={setNewUserName}/>
       <AccountContainer/>
     </main>
     <Footer/>
