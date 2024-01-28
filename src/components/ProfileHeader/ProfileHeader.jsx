@@ -40,6 +40,7 @@ const Button = styled.button`
 
 const ProfileHeader = (props) => {
   const [edit, setEdit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const regexp = new RegExp('[a-zA-Z]|[à-ü]|[À-Ü]', 'g');
 
   const submitForm = () => {
@@ -59,6 +60,8 @@ const ProfileHeader = (props) => {
       props.setNewUserName(newNames);
       setEdit(false);
     }
+
+    setErrorMessage(message)
   }
 
   return(
@@ -76,6 +79,9 @@ const ProfileHeader = (props) => {
               <Input id="firstName" placeholder={props.firstName} />
               <Input id="lastName" placeholder={props.lastName}  />
             </div>
+            {errorMessage.length > 0 && (
+              <p style={{margin: 0, lineHeight: 0, fontWeight: 500, color: 'red'}}>{errorMessage}</p>
+            )}
             <div style={{display: 'flex', justifyContent: 'center', gap: '20px'}}>
               <Button type="submit" onClick={submitForm}>Save</Button>
               <Button type="cancel" onClick={() => setEdit(false)}>Cancel</Button>
